@@ -1,7 +1,7 @@
 <template>
-  <div class='square' @click='coordinates'>
-    <h1 v-if='robotIsPresent'>R</h1>
-    <h1 v-if='targetIsPresent'>T</h1>
+  <div v-bind:class="{'square':(!robotIsPresent),'square-robot':(robotIsPresent), 'square-target':(targetIsPresent)}" @click='coordinates'>
+    <p v-if='robotIsPresent'>R</p>
+    <p v-if='targetIsPresent'>T</p>
   </div>
 </template>
 
@@ -16,12 +16,16 @@ export default {
     targetIsPresent: {
       type: Boolean,
       required: true
+    },
+    robotDirection: {
+      type: String, 
+      required: true
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .square {
   float: left;
   height: 50px;
@@ -32,5 +36,19 @@ export default {
   border: 1px solid #2c3e50;
   padding: 0px;
   text-align: center;
+  font-size: 30px;
+  line-height: 0px;
+  font-weight: bold;
 }
+
+.square-robot {
+  @extend .square;
+  background-color: lightcyan;
+}
+
+.square-target {
+  @extend .square;
+  background-color: lightyellow;
+}
+
 </style>
