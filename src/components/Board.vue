@@ -42,8 +42,8 @@ export default {
         [0, 1, 2, 3, 4],
         [0, 1, 2, 3, 4]
       ], 
-      robotLocationX: 0,
-      robotLocationY: 0,
+      robotLocationX: 2,
+      robotLocationY: 2,
       targetLocationX: 3, 
       targetLocationY: 2,
       robotDirection: 0,
@@ -66,8 +66,12 @@ export default {
     matchYCoordinates () {
       return this.robotLocationY === this.targetLocationY
     },
+    matchCoordinates () {
+      return this.matchXCoordinates && this.matchYCoordinates
+    }, 
     scorePoint () {
-      if (this.matchXCoordinates && this.matchYCoordinates) {
+      if (this.matchCoordinates) {
+        this.regenerateTarget()
         this.$emit('scorePoint')
         return true
       } else {
@@ -105,6 +109,15 @@ export default {
       } else {
         return this.robotDirection = 3
       }
+    },
+    regenerateTarget () {
+      while (this.matchCoordinates) {
+        this.targetLocationX = this.generateRandomNumber(5)
+        this.targetLocationY = this.generateRandomNumber(5)
+      }
+    }, 
+    generateRandomNumber (max) {
+      return Math.floor(Math.random() * max)
     }
   }
 }
