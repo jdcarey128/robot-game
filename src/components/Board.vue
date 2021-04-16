@@ -1,10 +1,21 @@
 <template>
+  <h2>Robot Direction: {{directions[robotDirection]}}</h2>
+  <p><strong>Player Score: </strong>{{playerScore}}</p>
+  <p v-if="invalidCoordinates" class="error">Your robot has crashed off the board!!!</p>
   <div v-for="(row, rowIndex) in board" class='board-row' :key='rowIndex'>
     <div v-for="(square, squareIndex) in row" class='board-square' :key='squareIndex'>
       <Square 
-        :robotIsPresent='robotIsPresent(squareIndex, rowIndex)'
-        :targetIsPresent='targetIsPresent(squareIndex, rowIndex)'
+        :robotIsPresent="robotIsPresent(squareIndex, rowIndex)"
+        :targetIsPresent="targetIsPresent(squareIndex, rowIndex)"
+        robotDirection="directions[robotDirection"
       />
+    </div>
+  </div>
+  <div class="game-controls">
+    <button @click="moveRobotForward">Move Forward</button>
+    <div>
+      <button @click="rotateRobotLeft">Rotate Left</button>
+      <button @click="rotateRobotRight">Rotate Right</button>
     </div>
   </div>
 </template>
@@ -16,6 +27,12 @@ export default {
   components: {
     Square
   },
+  props: {
+    playerScore: {
+      type: Number, 
+      required: true
+    }
+  },
   data () {
     return {
       board:[
@@ -26,20 +43,35 @@ export default {
         [0, 1, 2, 3, 4]
       ], 
       robotLocationX: 0,
-      robotLocationY: 1,
+      robotLocationY: 0,
       targetLocationX: 3, 
       targetLocationY: 2,
-      robotDirection: 'u'
+      robotDirection: 0,
+      directions: {0: 'Up', 1: 'Left', 2: 'Down', 3: 'Right'}
     }
   },
   computed: {
-    robotReachedTarget () {
-      if (this.robotLocationX === this.targetLocationX && this.robotLocationY === this.targetLocationY) {
-        alert('true')
-        return 1
+    invalidX () {
+      return this.robotLocationX < 0 || this.robotLocationX > 4
+    },
+    invalidY () {
+      return this.robotLocationY < 0 || this.robotLocationY > 4
+    }, 
+    invalidCoordinates () {
+      return this.invalidX || this.invalidY
+    }, 
+    matchXCoordinates () {
+      return this.robotLocationX === this.targetLocationX
+    },
+    matchYCoordinates () {
+      return this.robotLocationY === this.targetLocationY
+    },
+    scorePoint () {
+      if (this.matchXCoordinates && this.matchYCoordinates) {
+        this.$emit('scorePoint')
+        return true
       } else {
-        alert('false')
-        return 1
+        return false
       }
     }
   }, 
@@ -49,9 +81,32 @@ export default {
     },
     targetIsPresent (xIndex, yIndex) {
       return xIndex === this.targetLocationX && yIndex === this.targetLocationY
+    },
+    moveRobotForward () {
+      if (this.robotDirection === 0) {
+        return this.robotLocationY -= 1
+      } else if (this.robotDirection === 1) {
+        return this.robotLocationX -= 1
+      } else if (this.robotDirection === 2) {
+        return this.robotLocationY += 1
+      } else 
+        return this.robotLocationX += 1
+    },
+    rotateRobotLeft () {
+      if (this.robotDirection < 3) {
+        return this.robotDirection += 1
+      } else {
+        return this.robotDirection = 0
+      }
+    },
+    rotateRobotRight () {
+      if (this.robotDirection > 0) {
+        return this.robotDirection -= 1
+      } else {
+        return this.robotDirection = 3
+      }
     }
   }
-  
 }
 </script>
 
@@ -59,5 +114,13 @@ export default {
 .board-row {
   display: flex;
   justify-content: center;
+}
+
+.game-controls {
+  padding-top: 10px;
+}
+
+.error {
+  color: red;
 }
 </style>

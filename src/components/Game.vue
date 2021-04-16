@@ -1,6 +1,9 @@
 <template>
   <div class='board-wrapper'>
-    <Board />
+    <Board 
+      :playerScore="playerScore"
+      @scorePoint="scorePoint"
+    />
   </div>
 </template>
 
@@ -13,6 +16,12 @@ export default {
   }, 
   data () {
     return {
+      playerScore: 0
+    }
+  },
+  methods: {
+    scorePoint () {
+      this.playerScore += 1
     }
   }
 }
