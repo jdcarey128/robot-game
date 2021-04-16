@@ -1,5 +1,7 @@
 <template>
-  <Game />
+  <div class="game-wrapper">
+    <Game />
+  </div>
 </template>
 
 <script>
@@ -13,14 +15,14 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color: rgb(252, 248, 248);
+  background-color: #F3F5FA;
   min-height: 100vh;
 }
 </style>
