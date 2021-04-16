@@ -16,20 +16,6 @@ export default {
   components: {
     Square
   },
-  props: {
-    size: {
-      type: String, 
-      required: true
-    },
-    robotLocation: {
-      type: Object, 
-      required: true
-    },
-    targetLocation: {
-      type: Object,
-      required: true
-    }
-  },
   data () {
     return {
       board:[
@@ -38,12 +24,17 @@ export default {
         [0, 1, 2, 3, 4],
         [0, 1, 2, 3, 4],
         [0, 1, 2, 3, 4]
-      ]
+      ], 
+      robotLocationX: 0,
+      robotLocationY: 1,
+      targetLocationX: 3, 
+      targetLocationY: 2,
+      robotDirection: 'u'
     }
   },
   computed: {
     robotReachedTarget () {
-      if (this.robotLocation['x'] === this.targetLocation['x'] && this.robotLocation['y'] === this.targetLocation['y']) {
+      if (this.robotLocationX === this.targetLocationX && this.robotLocationY === this.targetLocationY) {
         alert('true')
         return 1
       } else {
@@ -54,17 +45,17 @@ export default {
   }, 
   methods: {
     robotIsPresent (xIndex, yIndex) {
-      return xIndex === this.robotLocation['x'] && yIndex === this.robotLocation['y']
+      return xIndex === this.robotLocationX && yIndex === this.robotLocationY
     },
     targetIsPresent (xIndex, yIndex) {
-      return xIndex === this.targetLocation['x'] && yIndex === this.targetLocation['y']
+      return xIndex === this.targetLocationX && yIndex === this.targetLocationY
     }
   }
   
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .board-row {
   display: flex;
   justify-content: center;

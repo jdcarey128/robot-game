@@ -1,9 +1,6 @@
 <template>
-  <div class='board'>
-    <Board 
-      :robotLocation = 'robotLocation'
-      :targetLocation = 'targetLocation'
-    />
+  <div class='board-wrapper'>
+    <Board />
   </div>
 </template>
 
@@ -16,16 +13,13 @@ export default {
   }, 
   data () {
     return {
-      robotLocation: { 'x': 1, 'y': 2 },
-      robotDirection: 'u',
-      targetLocation: { 'x': 4, 'y': 2 }
     }
   }
 }
 </script>
 
 <style scoped>
-.board {
+.board-wrapper {
   padding-top: 100px;
 }
 
