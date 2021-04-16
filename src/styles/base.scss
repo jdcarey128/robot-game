@@ -2,3 +2,12 @@
 body {
   margin: 0;
 }
+
+button {
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  &:hover {
+    color: blue;
+  }
+}
