@@ -5,9 +5,10 @@
       :timeLimit="timeLimit"
       :warningThreshold="warningThreshold"
       :alertThreshold="alertThreshold"
+      @startTimer="startTimer"
+      @resetTimer="resetTimer"
     />
   </div>
-  <button @click="startTimer">Start Timer</button>
   <div class='board-wrapper'>
     <Board 
       :playerScore="playerScore"
@@ -28,7 +29,7 @@ export default {
   data () {
     return {
       playerScore: 0,
-      timeLimit: 5, 
+      timeLimit: 20, 
       timePassed: 0,
       timerInterval: null, 
       warningThreshold: 15, 
@@ -46,14 +47,26 @@ export default {
     },
     startTimer () {
       this.timerInterval = setInterval(() => (this.timePassed += 1), 1000)
+    },
+    resetTimer () {
+      clearInterval(this.timerInterval)
+      this.playerScore = 0
+      this.timeLimit = 20
+      this.timePassed = 0
     }
   }
 }
 </script>
 
 <style scoped>
+.timer-wrapper {
+  display: inline-block;
+  vertical-align: middle;
+}
 .board-wrapper {
-  padding-top: 100px;
+  display: inline-block;
+  margin: 100px 100px;
+  vertical-align: middle;
 }
 
 </style>
