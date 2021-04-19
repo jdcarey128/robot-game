@@ -33,6 +33,7 @@ export default {
       required: true
     }
   },
+  emits: ["scorePoint"],
   data () {
     return {
       board:[
@@ -68,7 +69,7 @@ export default {
     },
     matchCoordinates () {
       return this.matchXCoordinates && this.matchYCoordinates
-    }, 
+    },
     scorePoint () {
       if (this.matchCoordinates) {
         this.regenerateTarget()
@@ -77,7 +78,7 @@ export default {
       } else {
         return false
       }
-    }
+    } 
   }, 
   methods: {
     robotIsPresent (xIndex, yIndex) {
