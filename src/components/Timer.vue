@@ -28,11 +28,16 @@
     <span class="timer_label">
       {{ formattedTimeLeft }}
     </span>
+    <div class=timer-buttons>
+      <button class='button_game-start' @click="startGame">Start</button>
+      <button class='button_game-reset' @click="resetGame">Reset</button>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
+  emits: ["startTimer", "resetTimer"],
   props: {
     timeLeft: {
       type: Number, 
@@ -99,6 +104,14 @@ export default {
         return info.color
       }
     }
+  }, 
+  methods: {
+    startGame () {
+      this.$emit('startTimer')
+    },
+    resetGame () {
+      this.$emit('resetTimer')
+    }
   }
 }
 </script>
@@ -139,7 +152,6 @@ export default {
     }
   }
 
-
   &_svg {
     transform: scaleX(-1);
   }
@@ -153,6 +165,11 @@ export default {
     align-items: center;
     justify-content: center;
     font-size: 30px;
+  }
+
+  .timer-buttons {
+    display: flex;
+    justify-content: center;
   }
 }
 </style>
