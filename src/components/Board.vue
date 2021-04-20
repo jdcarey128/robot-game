@@ -31,6 +31,14 @@ export default {
     playerScore: {
       type: Number, 
       required: true
+    },
+    gameActive: {
+      type: Boolean, 
+      required: true
+    }, 
+    gameReset: {
+      type: Boolean, 
+      required: true
     }
   },
   emits: ["scorePoint"],
@@ -45,10 +53,23 @@ export default {
       ], 
       robotLocationX: 2,
       robotLocationY: 2,
-      targetLocationX: 3, 
-      targetLocationY: 2,
+      targetLocationX: null, 
+      targetLocationY: null,
       robotDirection: 0,
       directions: {0: 'Up', 1: 'Left', 2: 'Down', 3: 'Right'}
+    }
+  },
+  watch: {
+    gameActive: function () {
+      if (this.gameActive) {
+        this.regenerateTarget()
+      }
+    },
+    gameReset: function () {
+      if (this.gameReset) {
+        this.resetTarget()
+        this.resetRobot()
+      }
     }
   },
   computed: {
@@ -78,7 +99,7 @@ export default {
       } else {
         return false
       }
-    } 
+    }, 
   }, 
   methods: {
     robotIsPresent (xIndex, yIndex) {
@@ -112,11 +133,21 @@ export default {
       }
     },
     regenerateTarget () {
+      this.targetLocationX = this.generateRandomNumber(5)
+      this.targetLocationY = this.generateRandomNumber(5)
       while (this.matchCoordinates) {
         this.targetLocationX = this.generateRandomNumber(5)
         this.targetLocationY = this.generateRandomNumber(5)
       }
     }, 
+    resetTarget () {
+      this.targetLocationX = null 
+      this.targetLocationY = null
+    },
+    resetRobot () {
+      this.robotLocationX = 2
+      this.robotLocationY = 2
+    },
     generateRandomNumber (max) {
       return Math.floor(Math.random() * max)
     }

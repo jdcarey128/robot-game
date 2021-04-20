@@ -12,6 +12,8 @@
   <div class='board-wrapper'>
     <Board 
       :playerScore="playerScore"
+      :gameActive="gameActive"
+      :gameReset="gameReset"
       @scorePoint="scorePoint"
     />
   </div>
@@ -36,9 +38,22 @@ export default {
       alertThreshold: 5
     }
   },
+  watch: {
+    timePassed: function () {
+      if (this.timePassed >= this.timeLimit) {
+        this.endGame()
+      }
+    }
+  },
   computed: {
     timeLeft () {
       return this.timeLimit - this.timePassed
+    }, 
+    gameActive () {
+      return this.timerInterval != null 
+    }, 
+    gameReset () {
+      return this.playerScore === 0 && this.timerInterval === null
     }
   },
   methods: {
@@ -50,9 +65,13 @@ export default {
     },
     resetTimer () {
       clearInterval(this.timerInterval)
+      this.timerInterval = null
       this.playerScore = 0
-      this.timeLimit = 20
       this.timePassed = 0
+    }, 
+    endGame () {
+      clearInterval(this.timerInterval)
+      this.timerInterval = null
     }
   }
 }
