@@ -37,7 +37,7 @@
 
 <script>
 export default {
-  emits: ["startTimer", "resetTimer"],
+  emits: ["startTimer", "resetGame"],
   props: {
     timeLeft: {
       type: Number, 
@@ -117,7 +117,7 @@ export default {
       this.$emit('startTimer')
     },
     resetGame () {
-      this.$emit('resetTimer')
+      this.$emit('resetGame')
     }
   }
 }
