@@ -7,7 +7,7 @@
       :alertThreshold="alertThreshold"
       :gameActive="gameActive"
       @startTimer="startTimer"
-      @resetTimer="resetTimer"
+      @resetGame="resetGame"
     />
   </div>
   <div class='board-wrapper'>
@@ -15,7 +15,9 @@
       :playerScore="playerScore"
       :gameActive="gameActive"
       :gameReset="gameReset"
+      :robotLife="robotLife"
       @scorePoint="scorePoint"
+      @loseRobotLife="loseRobotLife"
     />
   </div>
 </template>
@@ -36,12 +38,18 @@ export default {
       timePassed: 0,
       timerInterval: null, 
       warningThreshold: 15, 
-      alertThreshold: 5
+      alertThreshold: 5, 
+      robotLife: 2
     }
   },
   watch: {
     timePassed: function () {
       if (this.timePassed >= this.timeLimit) {
+        this.endGame()
+      }
+    }, 
+    robotLife: function () {
+      if (this.robotLife <= 0) {
         this.endGame()
       }
     }
@@ -64,15 +72,20 @@ export default {
     startTimer () {
       this.timerInterval = setInterval(() => (this.timePassed += 1), 1000)
     },
-    resetTimer () {
+    resetGame () {
       clearInterval(this.timerInterval)
       this.timerInterval = null
       this.playerScore = 0
       this.timePassed = 0
+      this.robotLife = 2
     }, 
     endGame () {
       clearInterval(this.timerInterval)
       this.timerInterval = null
+      this.timePassed = this.timeLimit
+    },
+    loseRobotLife () {
+      this.robotLife -= 1
     }
   }
 }

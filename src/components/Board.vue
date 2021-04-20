@@ -1,7 +1,12 @@
 <template>
   <h2>Robot Direction: {{directions[robotDirection]}}</h2>
-  <p><strong>Player Score: </strong>{{playerScore}}</p>
-  <p v-if="invalidCoordinates" class="error">Your robot has crashed off the board!!!</p>
+  <div class="game-values">
+    <p><strong>Player Score: </strong>{{playerScore}}</p>
+    <p><strong>Robot Life: </strong>{{robotLife}}</p>
+  </div>
+  <p v-if="invalidCoordinates && robotAlive" class="error">Your robot crashed off the board and lost a life!!!</p>
+  <button class="button-regenerate" v-if="invalidCoordinates && robotAlive" @click="resetRobot">Regenerate Robot</button>
+  <p v-if="!robotAlive" class="error">Your robot is destroyed!!!<br><strong>GAME OVER</strong></p>
   <div v-for="(row, rowIndex) in board" class='board-row' :key='rowIndex'>
     <div v-for="(square, squareIndex) in row" class='board-square' :key='squareIndex'>
       <Square 
@@ -39,9 +44,13 @@ export default {
     gameReset: {
       type: Boolean, 
       required: true
+    }, 
+    robotLife: {
+      type: Number, 
+      required: true
     }
   },
-  emits: ["scorePoint"],
+  emits: ["scorePoint", "loseRobotLife"],
   data () {
     return {
       board:[
@@ -69,6 +78,11 @@ export default {
       if (this.gameReset) {
         this.resetTarget()
         this.resetRobot()
+      }
+    }, 
+    invalidCoordinates: function () {
+      if (this.invalidCoordinates) {
+        this.$emit('loseRobotLife')
       }
     }
   },
@@ -100,6 +114,9 @@ export default {
         return false
       }
     }, 
+    robotAlive () {
+      return this.robotLife > 0
+    }
   }, 
   methods: {
     robotIsPresent (xIndex, yIndex) {
@@ -156,6 +173,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.game-values {
+  display: flex;
+  justify-content: space-between;
+}
+.button-regenerate {
+  color: red;
+  padding: 2px;
+  margin-top: 0px;
+}
 .board-row {
   display: flex;
   justify-content: center;
@@ -167,5 +193,6 @@ export default {
 
 .error {
   color: red;
+  margin: 0px;
 }
 </style>
