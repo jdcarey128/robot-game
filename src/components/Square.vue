@@ -1,13 +1,22 @@
 <template>
   <div v-bind:class="{'square':(!robotIsPresent),'square-robot':(robotIsPresent), 'square-target':(targetIsPresent)}" @click='coordinates'>
-    <p v-if='robotIsPresent'>R</p>
+    <div v-if='robotIsPresent'>
+      <img class="robot-image" :src="robotImage" alt="robot">
+    </div>
     <p v-if='targetIsPresent'>T</p>
   </div>
 </template>
 
 <script>
+import robotImage from '@/assets/floating-robot.png'
+
 export default {
   name: 'Square',
+  setup () {
+    return {
+      robotImage
+    }
+  },
   props: {
     robotIsPresent: {
       type: Boolean,
@@ -43,7 +52,10 @@ export default {
 
 .square-robot {
   @extend .square;
-  background-color: lightcyan;
+}
+
+.robot-image {
+  height: 50px;
 }
 
 .square-target {

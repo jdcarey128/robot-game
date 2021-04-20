@@ -64,7 +64,7 @@ export default {
       robotLocationY: 2,
       targetLocationX: null, 
       targetLocationY: null,
-      robotDirection: 0,
+      robotDirection: 2,
       directions: {0: 'Up', 1: 'Left', 2: 'Down', 3: 'Right'}
     }
   },
