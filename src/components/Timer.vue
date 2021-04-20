@@ -29,7 +29,7 @@
       {{ formattedTimeLeft }}
     </span>
     <div class=timer-buttons>
-      <button class='button_game-start' @click="startGame">Start</button>
+      <button :disabled='disableStart' class='button_game-start' @click="startGame">Start</button>
       <button class='button_game-reset' @click="resetGame">Reset</button>
     </div>
   </div>
@@ -54,6 +54,10 @@ export default {
     alertThreshold: {
       type: Number, 
       default: 5
+    },
+    gameActive: {
+      type: Boolean, 
+      required: true
     }
   },
   computed: {
@@ -103,6 +107,9 @@ export default {
       } else {
         return info.color
       }
+    },
+    disableStart () {
+      return this.gameActive || this.timeLeft === 0
     }
   }, 
   methods: {

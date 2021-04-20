@@ -12,10 +12,10 @@
     </div>
   </div>
   <div class="game-controls">
-    <button @click="moveRobotForward">Move Forward</button>
+    <button :disabled='!gameActive' @click="moveRobotForward">Move Forward</button>
     <div>
-      <button @click="rotateRobotLeft">Rotate Left</button>
-      <button @click="rotateRobotRight">Rotate Right</button>
+      <button :disabled='!gameActive' @click="rotateRobotLeft">Rotate Left</button>
+      <button :disabled='!gameActive' @click="rotateRobotRight">Rotate Right</button>
     </div>
   </div>
 </template>

@@ -6,8 +6,8 @@ body {
 button {
   padding: 10px;
   margin: 5px;
-  cursor: pointer;
-  &:hover {
+  &:hover:enabled {
+    cursor: pointer;
     color: blue;
   }
 }

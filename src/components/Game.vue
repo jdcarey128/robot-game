@@ -5,6 +5,7 @@
       :timeLimit="timeLimit"
       :warningThreshold="warningThreshold"
       :alertThreshold="alertThreshold"
+      :gameActive="gameActive"
       @startTimer="startTimer"
       @resetTimer="resetTimer"
     />
