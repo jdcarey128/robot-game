@@ -1,4 +1,5 @@
 <template>
+  <p class="alert" v-if="!gameActive && timeLeft==0"><strong>Time's Up!!!</strong></p>
   <div class="timer">
     <svg
       class="timer_svg"
@@ -124,6 +125,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.alert {
+  color: red;
+  font-size: 18px;
+}
 .timer {
   position: relative;
   width: 100px;
