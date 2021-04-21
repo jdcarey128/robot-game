@@ -1,35 +1,46 @@
 <template>
-  <div class='timer-wrapper'>
-    <Timer 
-      :timeLeft="timeLeft"
-      :timeLimit="timeLimit"
-      :warningThreshold="warningThreshold"
-      :alertThreshold="alertThreshold"
-      :gameActive="gameActive"
-      @startTimer="startTimer"
-      @resetGame="resetGame"
-    />
-  </div>
-  <div class='board-wrapper'>
-    <Board 
-      :playerScore="playerScore"
-      :gameActive="gameActive"
-      :gameReset="gameReset"
-      :robotLife="robotLife"
-      @scorePoint="scorePoint"
-      @loseRobotLife="loseRobotLife"
-    />
+  <div class="game-wrapper">
+    <div class='timer-wrapper'>
+      <Timer 
+        :timeLeft="timeLeft"
+        :timeLimit="timeLimit"
+        :warningThreshold="warningThreshold"
+        :alertThreshold="alertThreshold"
+        :gameActive="gameActive"
+        @startTimer="startTimer"
+        @resetGame="resetGame"
+      />
+    </div>
+    <div class='board-wrapper'>
+      <Board 
+        :playerScore="playerScore"
+        :gameActive="gameActive"
+        :gameReset="gameReset"
+        :robotLife="robotLife"
+        @scorePoint="scorePoint"
+        @loseRobotLife="loseRobotLife"
+      />
+    </div>
+    <div class="game-instructions">
+      <h2>Instructions</h2>
+      <p>Use the buttons or left, right, and up arrow keys to direct the robot to collect as many batteries as you can within the time limit. 
+        The robot rotates 90 degrees from its perspective. <strong>Be careful to stay within the grid boundaries!!!</strong></p>
+    </div>
+    <div class="leader-board">
+      <LeaderBoard/>
+    </div>
   </div>
 </template>
 
 <script>
 import Board from '@/components/Board.vue'
 import Timer from '@/components/Timer.vue'
+import LeaderBoard from '@/components/LeaderBoard.vue'
 
 export default {
   name: 'Game',
   components: {
-    Board, Timer
+    Board, Timer, LeaderBoard
   }, 
   data () {
     return {
@@ -91,15 +102,29 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.game-wrapper {
+  padding-top: 100px;
+  align-items: center;
+}
 .timer-wrapper {
+  margin-left: 10em;
   display: inline-block;
+  width: calc(20% - 10em);
   vertical-align: middle;
 }
 .board-wrapper {
   display: inline-block;
-  margin: 100px 100px;
+  width: 50%;
   vertical-align: middle;
 }
-
+.game-instructions {
+  display: inline-block;
+  margin-right: 2em;
+  width: calc(20% - 2em);
+  vertical-align: middle;
+}
+.leader-board {
+  margin-top: 100px;
+}
 </style>
