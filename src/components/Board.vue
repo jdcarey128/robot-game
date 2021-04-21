@@ -1,8 +1,8 @@
 <template>
   <h3>Robot Direction: {{directions[robotDirection]}}</h3>
   <div class="game-values">
-    <p><strong>Player Score: </strong>{{playerScore}}</p>
-    <p><strong>Robot Life: </strong>{{robotLife}}</p>
+    <p class="value"><strong>Player Score: </strong>{{playerScore}}</p>
+    <p class="value"><strong>Robot Life: </strong>{{robotLife}}</p>
   </div>
   <p v-if="invalidCoordinates && robotAlive" class="error">Your robot crashed off the board and lost a life!!!</p>
   <button class="button-regenerate" v-if="invalidCoordinates && robotAlive" @click="resetRobot">Regenerate Robot</button>
@@ -186,7 +186,10 @@ export default {
 <style lang="scss" scoped>
 .game-values {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  .value {
+    margin: 10px 15px;
+  }
 }
 .button-regenerate {
   color: red;
