@@ -8,6 +8,9 @@ button {
   margin: 5px;
   &:hover:enabled {
     cursor: pointer;
-    color: blue;
+    background-color: rgb(94, 219, 241);
+    color: white;
+    border: 2px solid #ccc;
+    border-radius: 2px;
   }
 }
