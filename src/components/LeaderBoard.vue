@@ -8,7 +8,7 @@
         <th>Date Set</th>
       </thead>
       <tbody>
-        <tr v-for="(user, index) in state.playerLeaders" :key="index">
+        <tr v-for="(user, index) in playerLeaders" :key="index">
           <td>{{user.name}}</td>
           <td>{{user.score}}</td>
           <td>{{formatDate(user.created)}}</td>
@@ -19,23 +19,62 @@
 </template>
 
 <script>
-import { reactive } from 'vue'
 import userScores from '@/assets/userScores.js'
 
 export default {
   name: 'LeaderBoard',
-  setup () {
-    const state = reactive({
-      playerLeaders: userScores
-    })
-
-    function formatDate (date) {
-      return new Date(date).toLocaleDateString()
+  emits: ['newHighScore'],
+  props: {
+    playerScore: {
+      type: Number, 
+      required: true
+    },
+    gameActive: {
+      type: Boolean, 
+      required: true
     }
-
+  },
+  data () {
     return {
-      state,
-      formatDate
+      // replace fixture below with result from mounted data
+      playerLeaders: userScores,
+      leaderCountDisplay: 10,
+      loading: true, 
+      errored: false,
+    }
+  }, 
+  // mounted () {
+  //   axios
+  //     .get('')
+  //     .then(response => (this.playerLeaders = response.data))
+  //     .catch(error => {
+  //       console.log(error)
+  //       this.errored = true
+  //     })
+  //     .finally(() => this.loading = false)
+  // },
+  watch: {
+    playerScore: function () {
+      if (this.minimumCount || this.minimumScore) {
+        this.$emit('newHighScore')
+      }
+    }
+  },
+  computed: {
+    minimumScore () {
+      return this.playerScore > this.minimumLeaderScore()
+    },
+    minimumCount () {
+      return this.playerLeaders.length < this.leaderCountDisplay && this.playerScore > 0
+    }
+  },
+  methods: {
+    formatDate (date) {
+      return new Date(date).toLocaleDateString()
+    },
+    minimumLeaderScore () {
+      const leaders = this.playerLeaders
+      return leaders[leaders.length - 1].score
     }
   }
 }
