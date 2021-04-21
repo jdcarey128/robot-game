@@ -20,6 +20,12 @@
         @scorePoint="scorePoint"
         @loseRobotLife="loseRobotLife"
       />
+      <HighScorePopup v-if="highScore && !gameActive"
+        :playerScore="playerScore"
+        @highScoreSubmitted="highScoreSubmitted"
+      >
+        <h2>New High Score!!!</h2>
+      </HighScorePopup>
     </div>
     <div class="game-instructions">
       <h2>Instructions</h2>
@@ -27,7 +33,11 @@
         The robot rotates 90 degrees from its perspective. <strong>Be careful to stay within the grid boundaries!!!</strong></p>
     </div>
     <div class="leader-board">
-      <LeaderBoard/>
+      <LeaderBoard
+        :playerScore="playerScore"
+        :gameActive="gameActive"
+        @newHighScore="newHighScore"
+      />
     </div>
   </div>
 </template>
@@ -36,11 +46,12 @@
 import Board from '@/components/Board.vue'
 import Timer from '@/components/Timer.vue'
 import LeaderBoard from '@/components/LeaderBoard.vue'
+import HighScorePopup from '@/components/HighScorePopup.vue'
 
 export default {
   name: 'Game',
   components: {
-    Board, Timer, LeaderBoard
+    Board, Timer, LeaderBoard, HighScorePopup
   }, 
   data () {
     return {
@@ -50,7 +61,8 @@ export default {
       timerInterval: null, 
       warningThreshold: 15, 
       alertThreshold: 5, 
-      robotLife: 2
+      robotLife: 2,
+      highScore: false
     }
   },
   watch: {
@@ -85,6 +97,7 @@ export default {
     },
     resetGame () {
       clearInterval(this.timerInterval)
+      this.highScore = false
       this.timerInterval = null
       this.playerScore = 0
       this.timePassed = 0
@@ -97,6 +110,12 @@ export default {
     },
     loseRobotLife () {
       this.robotLife -= 1
+    },
+    newHighScore () {
+      this.highScore = true
+    },
+    highScoreSubmitted () {
+      this.highScore = false
     }
   }
 }
