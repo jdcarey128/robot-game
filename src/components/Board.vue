@@ -12,7 +12,7 @@
       <Square 
         :robotIsPresent="robotIsPresent(squareIndex, rowIndex)"
         :targetIsPresent="targetIsPresent(squareIndex, rowIndex)"
-        robotDirection="directions[robotDirection"
+        :robotDirection="directions[robotDirection]"
       />
     </div>
   </div>

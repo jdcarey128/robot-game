@@ -1,6 +1,6 @@
 <template>
   <div v-bind:class="{'square':(!robotIsPresent),'square-robot':(robotIsPresent), 'square-target':(targetIsPresent)}" @click='coordinates'>
-    <div v-if='robotIsPresent'>
+    <div :class="`robot-direction_${robotDirection}`" v-if='robotIsPresent'>
       <img class="robot-image" :src="robotImage" alt="robot">
     </div>
     <p v-if='targetIsPresent'>T</p>
@@ -61,6 +61,16 @@ export default {
 .square-target {
   @extend .square;
   background-color: lightyellow;
+}
+
+.robot-direction_Up {
+  transform: rotate(180deg);
+}
+.robot-direction_Left {
+  transform: rotate(90deg);
+}
+.robot-direction_Right {
+  transform: rotate(-90deg);
 }
 
 </style>
