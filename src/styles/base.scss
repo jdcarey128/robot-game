@@ -1,0 +1,16 @@
+
+body {
+  margin: 0;
+}
+
+button {
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  &:hover:enabled {
+    cursor: pointer;
+    background-color: rgb(94, 219, 241);
+    color: white;
+    border-radius: 2px;
+  }
+}
