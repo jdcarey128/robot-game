@@ -1,5 +1,5 @@
 <template>
-  <h2>Robot Direction: {{directions[robotDirection]}}</h2>
+  <h3>Robot Direction: {{directions[robotDirection]}}</h3>
   <div class="game-values">
     <p><strong>Player Score: </strong>{{playerScore}}</p>
     <p><strong>Robot Life: </strong>{{robotLife}}</p>
@@ -31,6 +31,19 @@ export default {
   name: 'Board',
   components: {
     Square
+  },
+  mounted () {
+    window.addEventListener('keyup', event => {
+      if (this.gameActive) {
+        if (event.keyCode === 37) {
+          this.rotateRobotLeft()
+        } else if (event.keyCode === 39) {
+          this.rotateRobotRight()
+        } else if (event.keyCode === 38) {
+          this.moveRobotForward()
+        }
+      }
+    })
   },
   props: {
     playerScore: {
@@ -84,6 +97,12 @@ export default {
       if (this.invalidCoordinates) {
         this.$emit('loseRobotLife')
       }
+    }, 
+    matchCoordinates: function () {
+      if (this.matchCoordinates) {
+        this.regenerateTarget()
+        this.$emit('scorePoint')
+      }
     }
   },
   computed: {
@@ -105,15 +124,6 @@ export default {
     matchCoordinates () {
       return this.matchXCoordinates && this.matchYCoordinates
     },
-    scorePoint () {
-      if (this.matchCoordinates) {
-        this.regenerateTarget()
-        this.$emit('scorePoint')
-        return true
-      } else {
-        return false
-      }
-    }, 
     robotAlive () {
       return this.robotLife > 0
     }
@@ -164,6 +174,7 @@ export default {
     resetRobot () {
       this.robotLocationX = 2
       this.robotLocationY = 2
+      this.robotDirection = 2
     },
     generateRandomNumber (max) {
       return Math.floor(Math.random() * max)
