@@ -29,8 +29,8 @@
     </div>
     <div class="game-instructions">
       <h2>Instructions</h2>
-      <p>Use the buttons or left, right, and up arrow keys to direct the robot to collect as many batteries as you can within the time limit. 
-        The robot rotates 90 degrees from its perspective. <strong>Be careful to stay within the grid boundaries!!!</strong></p>
+      <p>Use the control buttons or the left, right, and up arrow keys to direct the robot to collect as many batteries as you can within the time limit. 
+        The robot rotates 90 degrees from its perspective and moves in the direction it is facing (towards its blue shadow). <strong>Be careful to stay within the grid boundaries!!!</strong></p>
     </div>
     <div class="leader-board">
       <LeaderBoard
@@ -60,9 +60,9 @@ export default {
       timeLimit: 20, 
       timePassed: 0,
       timerInterval: null, 
-      warningThreshold: 15, 
+      warningThreshold: 10, 
       alertThreshold: 5, 
-      robotLife: 2,
+      robotLife: 3,
       highScore: false,
       componentKey: 0
     }
@@ -103,7 +103,7 @@ export default {
       this.timerInterval = null
       this.playerScore = 0
       this.timePassed = 0
-      this.robotLife = 2
+      this.robotLife = 3
     }, 
     endGame () {
       clearInterval(this.timerInterval)
