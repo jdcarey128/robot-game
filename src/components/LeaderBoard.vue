@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import userScores from '@/assets/userScores.js'
 import axios from 'axios'
 
 export default {
@@ -43,26 +42,22 @@ export default {
     gameActive: {
       type: Boolean, 
       required: true
-    },
-    componentKey: {
-      type: Number, 
-      required: true
     }
   },
   data () {
     return {
-      playerLeaders: userScores,
+      playerLeaders: null,
       leaderCountDisplay: 10,
       loading: true, 
       errored: false,
     }
   }, 
-  async mounted () {
+  created () {
     axios
-      .get('http://localhost:3000/users')
+      .get(`${process.env.VUE_APP_API_URL}/users`)
       .then(response => (this.playerLeaders = response.data))
       .catch(error => {
-        console.log(error)
+        alert("There was an error when retrieving the leader board.", error)
         this.errored = true
       })
       .finally(() => this.loading = false)
@@ -72,9 +67,6 @@ export default {
       if (this.minimumCount || this.minimumScore) {
         this.$emit('newHighScore')
       }
-    },
-    componentKey: function () {
-      this.$forceUpdate()
     }
   },
   computed: {
