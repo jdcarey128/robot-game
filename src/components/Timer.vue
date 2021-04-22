@@ -1,4 +1,5 @@
 <template>
+  <p class="message" v-if="!gameActive && timeLeft==20"><strong>Click start to begin the game.</strong></p>
   <p class="alert" v-if="!gameActive && timeLeft==0"><strong>Time's Up!!!</strong></p>
   <div class="timer">
     <svg
@@ -129,6 +130,10 @@ export default {
   color: red;
   font-size: 18px;
 }
+.message {
+  color: green;
+  font-size: 18px;
+}
 .timer {
   position: relative;
   width: 100px;
@@ -182,6 +187,14 @@ export default {
   .timer-buttons {
     display: flex;
     justify-content: center;
+
+    .button_game-start:enabled {
+      color: green;
+    }
+
+    .button_game-start:hover {
+      color: white;
+    }
   }
 }
 </style>
