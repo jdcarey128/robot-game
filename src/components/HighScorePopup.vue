@@ -12,7 +12,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 
 export default {
   name: "HighScorePopup",
@@ -22,6 +22,13 @@ export default {
       type: Number, 
       required: true
     }
+  },
+  mounted () {
+    window.addEventListener('keyup', event => {
+      if (event.key === 'Enter' && this.validSubmission) {
+        this.submitHighScore(this.name, this.playerScore)
+      }
+    })
   },
   data () {
     return {
@@ -34,15 +41,20 @@ export default {
     }
   },
   methods: {
-    submitHighScore () {
-      this.$emit('highScoreSubmitted')
-      // let url = ''
-      // let contact = {
-      //   "name": this.name, 
-      //   "score": this.playerScore
-      // }
-
-      // return axios.post(url, contact)
+    submitHighScore (name, score) {
+      const url = `${process.env.VUE_APP_API_URL}/users`
+      const contact = {
+        "name": name, 
+        "score": score
+      }
+      axios.post(url, contact)
+        .then(() => {
+          this.$emit('highScoreSubmitted')
+        })
+        .catch(error => {
+          const errorMessage = error.message 
+          alert("There was an error when submitting your high score.", errorMessage)
+        })
     }
   }
 }
