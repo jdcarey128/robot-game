@@ -43,6 +43,10 @@ export default {
     gameActive: {
       type: Boolean, 
       required: true
+    },
+    componentKey: {
+      type: Number, 
+      required: true
     }
   },
   data () {
@@ -53,9 +57,9 @@ export default {
       errored: false,
     }
   }, 
-  mounted () {
+  async mounted () {
     axios
-      .get('http://localhost:3000/users/')
+      .get('http://localhost:3000/users')
       .then(response => (this.playerLeaders = response.data))
       .catch(error => {
         console.log(error)
@@ -68,6 +72,9 @@ export default {
       if (this.minimumCount || this.minimumScore) {
         this.$emit('newHighScore')
       }
+    },
+    componentKey: function () {
+      this.$forceUpdate()
     }
   },
   computed: {
@@ -80,7 +87,6 @@ export default {
   },
   methods: {
     formatDate (date) {
-      console.log('date', date)
       return new Date(date).toLocaleDateString()
     },
     minimumLeaderScore () {
