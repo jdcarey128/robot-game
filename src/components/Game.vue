@@ -24,7 +24,7 @@
         :playerScore="playerScore"
         @highScoreSubmitted="highScoreSubmitted"
       >
-        <h2>New High Score!!!</h2>
+        <h2>🎉 New High Score!!! 🎉</h2>
       </HighScorePopup>
     </div>
     <div class="game-instructions">
@@ -34,6 +34,7 @@
     </div>
     <div class="leader-board">
       <LeaderBoard
+        :key="componentKey"
         :playerScore="playerScore"
         :gameActive="gameActive"
         @newHighScore="newHighScore"
@@ -62,7 +63,8 @@ export default {
       warningThreshold: 15, 
       alertThreshold: 5, 
       robotLife: 2,
-      highScore: false
+      highScore: false,
+      componentKey: 0
     }
   },
   watch: {
@@ -115,6 +117,7 @@ export default {
       this.highScore = true
     },
     highScoreSubmitted () {
+      this.componentKey += 1
       this.highScore = false
     }
   }
