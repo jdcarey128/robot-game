@@ -7,11 +7,21 @@
         <th>Score</th>
         <th>Date Set</th>
       </thead>
-      <tbody>
+      <tbody v-if="!errored">
         <tr v-for="(user, index) in playerLeaders" :key="index">
           <td>{{user.name}}</td>
           <td>{{user.score}}</td>
-          <td>{{formatDate(user.created)}}</td>
+          <td>{{formatDate(user.created_at)}}</td>
+        </tr>
+      </tbody>
+      <tbody v-if="loading">
+        <tr>
+          <td colspan="3">...Loading...</td>
+        </tr>
+      </tbody>
+      <tbody v-if="errored && !loading">
+        <tr>
+          <td colspan="3">The Leader Board cannot be accessed right now</td>
         </tr>
       </tbody>
     </table>
@@ -20,6 +30,7 @@
 
 <script>
 import userScores from '@/assets/userScores.js'
+import axios from 'axios'
 
 export default {
   name: 'LeaderBoard',
@@ -36,23 +47,22 @@ export default {
   },
   data () {
     return {
-      // replace fixture below with result from mounted data
       playerLeaders: userScores,
       leaderCountDisplay: 10,
       loading: true, 
       errored: false,
     }
   }, 
-  // mounted () {
-  //   axios
-  //     .get('')
-  //     .then(response => (this.playerLeaders = response.data))
-  //     .catch(error => {
-  //       console.log(error)
-  //       this.errored = true
-  //     })
-  //     .finally(() => this.loading = false)
-  // },
+  mounted () {
+    axios
+      .get('http://localhost:3000/users/')
+      .then(response => (this.playerLeaders = response.data))
+      .catch(error => {
+        console.log(error)
+        this.errored = true
+      })
+      .finally(() => this.loading = false)
+  },
   watch: {
     playerScore: function () {
       if (this.minimumCount || this.minimumScore) {
@@ -70,6 +80,7 @@ export default {
   },
   methods: {
     formatDate (date) {
+      console.log('date', date)
       return new Date(date).toLocaleDateString()
     },
     minimumLeaderScore () {
