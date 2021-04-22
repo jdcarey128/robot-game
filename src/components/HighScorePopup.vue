@@ -12,7 +12,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 
 export default {
   name: "HighScorePopup",
@@ -22,6 +22,11 @@ export default {
       type: Number, 
       required: true
     }
+  },
+  mounted () {
+    window.addEventListener('keyup', event => {
+      console.log('enter key', event.key === 'Enter')
+    })
   },
   data () {
     return {
@@ -36,13 +41,12 @@ export default {
   methods: {
     submitHighScore () {
       this.$emit('highScoreSubmitted')
-      // let url = ''
-      // let contact = {
-      //   "name": this.name, 
-      //   "score": this.playerScore
-      // }
-
-      // return axios.post(url, contact)
+      let url = 'http://localhost:3000/users'
+      let contact = {
+        "name": this.name, 
+        "score": this.playerScore
+      }
+      return axios.post(url, contact)
     }
   }
 }
