@@ -25,7 +25,9 @@ export default {
   },
   mounted () {
     window.addEventListener('keyup', event => {
-      console.log('enter key', event.key === 'Enter')
+      if (event.key === 'Enter' && this.validSubmission) {
+        this.submitHighScore(this.name, this.playerScore)
+      }
     })
   },
   data () {
@@ -39,14 +41,20 @@ export default {
     }
   },
   methods: {
-    submitHighScore () {
-      this.$emit('highScoreSubmitted')
-      let url = 'http://localhost:3000/users'
-      let contact = {
-        "name": this.name, 
-        "score": this.playerScore
+    submitHighScore (name, score) {
+      const url = `${process.env.VUE_APP_API_URL}/users`
+      const contact = {
+        "name": name, 
+        "score": score
       }
-      return axios.post(url, contact)
+      axios.post(url, contact)
+        .then(() => {
+          this.$emit('highScoreSubmitted')
+        })
+        .catch(error => {
+          const errorMessage = error.message 
+          alert("There was an error when submitting your high score.", errorMessage)
+        })
     }
   }
 }
