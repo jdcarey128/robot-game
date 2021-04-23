@@ -7,6 +7,7 @@
         :warningThreshold="warningThreshold"
         :alertThreshold="alertThreshold"
         :gameActive="gameActive"
+        :robotLife="robotLife"
         @startTimer="startTimer"
         @resetGame="resetGame"
       />
@@ -57,10 +58,10 @@ export default {
   data () {
     return {
       playerScore: 0,
-      timeLimit: 20, 
+      timeLimit: 60, 
       timePassed: 0,
       timerInterval: null, 
-      warningThreshold: 10, 
+      warningThreshold: 20, 
       alertThreshold: 5, 
       robotLife: 3,
       highScore: false,
