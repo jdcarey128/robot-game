@@ -1,6 +1,6 @@
 <template>
-  <p class="message" v-if="!gameActive && timeLeft==20"><strong>Click start to begin the game.</strong></p>
-  <p class="alert" v-if="!gameActive && timeLeft==0"><strong>Time's Up!!!</strong></p>
+  <p class="message" v-if="!gameActive && timeLeft === timeLimit"><strong>Click start to begin the game.</strong></p>
+  <p class="alert" v-if="!gameActive && timeLeft==0 && robotLife != 0"><strong>Time's Up!!!</strong></p>
   <div class="timer">
     <svg
       class="timer_svg"
@@ -51,7 +51,7 @@ export default {
     }, 
     warningThreshold: {
       type: Number, 
-      default: 15
+      default: 20
     },
     alertThreshold: {
       type: Number, 
@@ -59,6 +59,10 @@ export default {
     },
     gameActive: {
       type: Boolean, 
+      required: true
+    },
+    robotLife: {
+      type: Number, 
       required: true
     }
   },
