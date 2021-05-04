@@ -40,16 +40,13 @@ export default {
     Square
   },
   mounted () {
-    window.addEventListener('keyup', event => {
+    window.addEventListener('keyup', (event) => {
       if (this.gameActive) {
-        if (event.keyCode === 37) {
-          event.preventDefault()
+        if (event.key === 'ArrowLeft') {
           this.rotateRobotLeft()
-        } else if (event.keyCode === 39) {
-          event.preventDefault()
+        } else if (event.key === 'ArrowRight') {
           this.rotateRobotRight()
-        } else if (event.keyCode === 38) {
-          event.preventDefault()
+        } else if (event.key === 'ArrowUp') {
           this.moveRobotForward()
         }
       }
