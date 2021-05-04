@@ -19,16 +19,23 @@
   <div class="game-controls">
     <button :disabled='!gameActive' @click="moveRobotForward">Move Forward</button>
     <div>
-      <button :disabled='!gameActive' @click="rotateRobotLeft">Rotate Left</button>
-      <button :disabled='!gameActive' @click="rotateRobotRight">Rotate Right</button>
+      <button :disabled='!gameActive' @click="rotateRobotLeft"><img class="rotate-arrow-left" :src="rotateArrow" alt="Rotate Left"></button>
+      <button :disabled='!gameActive' @click="rotateRobotRight"><img class="rotate-arrow" :src="rotateArrow" alt="Rotate Right"></button>
     </div>
   </div>
 </template>
 
 <script>
 import Square from '@/components/Square.vue'
+import rotateArrow from '@/assets/rotate-arrow.png'
+
 export default {
   name: 'Board',
+  setup () {
+    return {
+      rotateArrow
+    }
+  },
   components: {
     Square
   },
@@ -203,6 +210,13 @@ export default {
 
 .game-controls {
   padding-top: 10px;
+  .rotate-arrow-left {
+    width: 20px;
+    transform: scaleX(-1);
+  }
+  .rotate-arrow {
+    width: 20px;
+  }
 }
 
 .error {
