@@ -1,5 +1,5 @@
 <template>
-  <h3>Robot Direction: {{directions[robotDirection]}}</h3>
+  <p><strong>Robot Direction: </strong>{{directions[robotDirection]}}</p>
   <div class="game-values">
     <p class="value"><strong>Player Score: </strong>{{playerScore}}</p>
     <p class="value"><strong>Robot Life: </strong>{{robotLife}}</p>
@@ -7,7 +7,7 @@
   <p v-if="invalidCoordinates && robotAlive" class="error">Your robot crashed off the board and lost a life!!!</p>
   <button class="button-regenerate" v-if="invalidCoordinates && robotAlive" @click="resetRobot">Regenerate Robot</button>
   <p v-if="!robotAlive" class="error">Your robot is destroyed!!!<br><strong>GAME OVER</strong></p>
-  <div v-for="(row, rowIndex) in board" class='board-row' :key='rowIndex'>
+  <div v-for="(row, rowIndex) in generatedBoard" class='board-row' :key='rowIndex'>
     <div v-for="(square, squareIndex) in row" class='board-square' :key='squareIndex'>
       <Square 
         :robotIsPresent="robotIsPresent(squareIndex, rowIndex)"
@@ -43,10 +43,13 @@ export default {
     window.addEventListener('keyup', event => {
       if (this.gameActive) {
         if (event.keyCode === 37) {
+          event.preventDefault()
           this.rotateRobotLeft()
         } else if (event.keyCode === 39) {
+          event.preventDefault()
           this.rotateRobotRight()
         } else if (event.keyCode === 38) {
+          event.preventDefault()
           this.moveRobotForward()
         }
       }
@@ -68,18 +71,15 @@ export default {
     robotLife: {
       type: Number, 
       required: true
+    },
+    boardLength: {
+      type: Number, 
+      required: true
     }
   },
   emits: ["scorePoint", "loseRobotLife"],
   data () {
     return {
-      board:[
-        [0, 1, 2, 3, 4],
-        [0, 1, 2, 3, 4],
-        [0, 1, 2, 3, 4],
-        [0, 1, 2, 3, 4],
-        [0, 1, 2, 3, 4]
-      ], 
       robotLocationX: 2,
       robotLocationY: 2,
       targetLocationX: null, 
@@ -110,14 +110,17 @@ export default {
         this.regenerateTarget()
         this.$emit('scorePoint')
       }
+    },
+    boardLength: function () {
+      this.resetRobot()
     }
   },
   computed: {
     invalidX () {
-      return this.robotLocationX < 0 || this.robotLocationX > 4
+      return this.robotLocationX < 0 || this.robotLocationX > this.boardLength - 1
     },
     invalidY () {
-      return this.robotLocationY < 0 || this.robotLocationY > 4
+      return this.robotLocationY < 0 || this.robotLocationY > this.boardLength - 1
     }, 
     invalidCoordinates () {
       return this.invalidX || this.invalidY
@@ -133,6 +136,9 @@ export default {
     },
     robotAlive () {
       return this.robotLife > 0
+    },
+    generatedBoard () {
+      return Array.from(new Array(this.boardLength), () => Array.from(new Array(this.boardLength), (x, index) => index ))
     }
   }, 
   methods: {
@@ -167,11 +173,11 @@ export default {
       }
     },
     regenerateTarget () {
-      this.targetLocationX = this.generateRandomNumber(5)
-      this.targetLocationY = this.generateRandomNumber(5)
+      this.targetLocationX = this.generateRandomNumber(this.boardLength)
+      this.targetLocationY = this.generateRandomNumber(this.boardLength)
       while (this.matchCoordinates) {
-        this.targetLocationX = this.generateRandomNumber(5)
-        this.targetLocationY = this.generateRandomNumber(5)
+        this.targetLocationX = this.generateRandomNumber(this.boardLength)
+        this.targetLocationY = this.generateRandomNumber(this.boardLength)
       }
     }, 
     resetTarget () {
@@ -179,8 +185,8 @@ export default {
       this.targetLocationY = null
     },
     resetRobot () {
-      this.robotLocationX = 2
-      this.robotLocationY = 2
+      this.robotLocationX = Math.floor(this.boardLength / 2) 
+      this.robotLocationY = Math.floor(this.boardLength / 2) 
       this.robotDirection = 2
     },
     generateRandomNumber (max) {
