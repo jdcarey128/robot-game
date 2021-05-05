@@ -19,6 +19,8 @@
         :gameReset="gameReset"
         :robotLife="robotLife"
         :boardLength="boardLength"
+        :timePassed="timePassed"
+        :timeLimit="timeLimit"
         @scorePoint="scorePoint"
         @loseRobotLife="loseRobotLife"
       />
@@ -118,11 +120,11 @@ export default {
       this.timerInterval = null
       this.playerScore = 0
       this.timePassed = 0
-      this.robotLife = 3
+      this.robotLife = 4
     }, 
     endGame () {
       clearInterval(this.timerInterval)
-      this.timerInterval = null
+      this.timerInterval = null 
       this.timePassed = this.timeLimit
     },
     loseRobotLife () {
