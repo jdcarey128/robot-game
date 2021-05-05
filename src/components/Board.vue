@@ -19,6 +19,7 @@
       <Square 
         :robotIsPresent="robotIsPresent(squareIndex, rowIndex)"
         :targetIsPresent="targetIsPresent(squareIndex, rowIndex)"
+        :obstacleIsPresent="obstacleIsPresent(squareIndex, rowIndex)"
         :robotDirection="directions[robotDirection]"
       />
     </div>
@@ -59,13 +60,15 @@ export default {
   mounted () {
     window.addEventListener('keydown', (event) => {
       if (this.gameActive) {
-        event.preventDefault()
         if (event.key === 'ArrowLeft') {
           this.rotateRobotLeft()
         } else if (event.key === 'ArrowRight') {
           this.rotateRobotRight()
         } else if (event.key === 'ArrowUp') {
+          event.preventDefault()
           this.moveRobotForward()
+        } else if (event.key === 'ArrowDown') {
+          event.preventDefault()
         }
       }
     })
@@ -90,6 +93,14 @@ export default {
     boardLength: {
       type: Number, 
       required: true
+    }, 
+    timePassed: {
+      type: Number, 
+      required: true
+    },
+    timeLimit: {
+      type: Number,
+      required: true
     }
   },
   emits: ["scorePoint", "loseRobotLife"],
@@ -100,19 +111,26 @@ export default {
       targetLocationX: null, 
       targetLocationY: null,
       robotDirection: 2,
-      directions: {0: 'Up', 1: 'Left', 2: 'Down', 3: 'Right'}
+      directions: {0: 'Up', 1: 'Left', 2: 'Down', 3: 'Right'},
+      obstacleTimer: 0,
+      obstacleInterval: null,
+      obstacleLocationX: null,
+      obstacleLocationY: null
     }
   },
   watch: {
     gameActive: function () {
       if (this.gameActive) {
         this.regenerateTarget()
+      } else {
+        this.resetObstacle()
       }
     },
     gameReset: function () {
       if (this.gameReset) {
         this.resetTarget()
         this.resetRobot()
+        this.resetObstacle()
       }
     }, 
     invalidCoordinates: function () {
@@ -128,6 +146,17 @@ export default {
     },
     boardLength: function () {
       this.resetRobot()
+    },
+    timePassed: function () {
+      if (!this.obstacleOnBoard && (this.generateRandomNumber(this.timeLimit) < this.timePassed)) {
+        this.generateObstacle()
+      }
+    },
+    matchObstacleRobotCoordinates: function () {
+      if (this.matchObstacleRobotCoordinates) {
+        this.resetObstacle()
+        this.$emit('loseRobotLife')
+      }
     }
   },
   computed: {
@@ -146,14 +175,35 @@ export default {
     matchYCoordinates () {
       return this.robotLocationY === this.targetLocationY
     },
+    obstacleMatchRobotXCoordinates () {
+      return this.robotLocationX === this.obstacleLocationX 
+    },
+    obstacleMatchRobotYCoordinates () {
+      return this.robotLocationY === this.obstacleLocationY 
+    },
+    obstacleMatchTargetXCoordinates () {
+      return this.obstacleLocationX === this.targetLocationX
+    },
+    obstacleMatchTargetYCoordinates () {
+      return this.obstacleLocationY === this.targetLocationY
+    },
     matchCoordinates () {
       return this.matchXCoordinates && this.matchYCoordinates
+    },
+    matchObstacleRobotCoordinates () {
+      return this.obstacleMatchRobotXCoordinates && this.obstacleMatchRobotYCoordinates
+    },
+    matchObstacleTargetCoordinates () {
+      return this.obstacleMatchTargetXCoordinates && this.obstacleMatchTargetYCoordinates
     },
     robotAlive () {
       return this.robotLife > 0
     },
     generatedBoard () {
       return Array.from(new Array(this.boardLength), () => Array.from(new Array(this.boardLength), (x, index) => index ))
+    },
+    obstacleOnBoard () {
+      return !!this.obstacleLocationX || !!this.obstacleLocationY
     }
   }, 
   methods: {
@@ -162,6 +212,9 @@ export default {
     },
     targetIsPresent (xIndex, yIndex) {
       return xIndex === this.targetLocationX && yIndex === this.targetLocationY
+    },
+    obstacleIsPresent (xIndex, yIndex) {
+      return xIndex === this.obstacleLocationX && yIndex === this.obstacleLocationY
     },
     moveRobotForward () {
       if (this.robotDirection === 0) {
@@ -190,7 +243,7 @@ export default {
     regenerateTarget () {
       this.targetLocationX = this.generateRandomNumber(this.boardLength)
       this.targetLocationY = this.generateRandomNumber(this.boardLength)
-      while (this.matchCoordinates) {
+      while (this.matchCoordinates || this.matchObstacleTargetCoordinates) {
         this.targetLocationX = this.generateRandomNumber(this.boardLength)
         this.targetLocationY = this.generateRandomNumber(this.boardLength)
       }
@@ -204,8 +257,28 @@ export default {
       this.robotLocationY = Math.floor(this.boardLength / 2) 
       this.robotDirection = 2
     },
+    resetObstacle () {
+      clearInterval(this.obstacleInterval)
+      this.obstacleInterval = null
+      this.obstacleTimer = 0
+      this.obstacleLocationX = null 
+      this.obstacleLocationY = null
+    },
     generateRandomNumber (max) {
       return Math.floor(Math.random() * max)
+    },
+    generateObstacle () {
+      clearInterval(this.obstacleInterval)
+      this.obstacleLocationX = this.generateRandomNumber(this.boardLength)
+      this.obstacleLocationY = this.generateRandomNumber(this.boardLength)
+      while (this.matchObstacleRobotCoordinates || this.matchObstacleTargetCoordinates) {
+        this.obstacleLocationX = this.generateRandomNumber(this.boardLength)
+        this.obstacleLocationY = this.generateRandomNumber(this.boardLength)
+      }
+      this.startObstacleTimer()
+    },
+    startObstacleTimer () {
+      this.obstacleInterval = setInterval(() => (this.obstacleTimer += 1), 1000)
     }
   }
 }
