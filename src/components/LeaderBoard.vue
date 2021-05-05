@@ -5,23 +5,25 @@
       <thead>
         <th>Name</th>
         <th>Score</th>
+        <th>Board Size</th>
         <th>Date Set</th>
       </thead>
       <tbody v-if="!errored">
         <tr v-for="(user, index) in playerLeaders" :key="index">
           <td>{{user.name}}</td>
           <td>{{user.score}}</td>
+          <td>{{user.size}}</td>
           <td>{{formatDate(user.created_at)}}</td>
         </tr>
       </tbody>
       <tbody v-if="loading">
         <tr>
-          <td colspan="3">...Loading...</td>
+          <td colspan="4">...Loading...</td>
         </tr>
       </tbody>
       <tbody v-if="errored && !loading">
         <tr>
-          <td colspan="3">The Leader Board cannot be accessed right now</td>
+          <td colspan="4">The Leader Board cannot be accessed right now</td>
         </tr>
       </tbody>
     </table>

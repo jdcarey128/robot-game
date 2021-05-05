@@ -18,11 +18,13 @@
         :gameActive="gameActive"
         :gameReset="gameReset"
         :robotLife="robotLife"
+        :boardLength="boardLength"
         @scorePoint="scorePoint"
         @loseRobotLife="loseRobotLife"
       />
       <HighScorePopup v-if="highScore && !gameActive"
         :playerScore="playerScore"
+        :boardSize="boardLength"
         @highScoreSubmitted="highScoreSubmitted"
       >
         <h2>🎉 New High Score!!! 🎉</h2>
@@ -30,6 +32,13 @@
     </div>
     <div class="game-instructions">
       <h2>Instructions</h2>
+      <select :disabled="gameActive" name="board-size" class="board-size" v-model="boardSelect">
+        <option disabled value="">Select board size</option>
+        <option>3 x 3</option>
+        <option>5 x 5</option>
+        <option>7 x 7</option>
+        <option>9 x 9</option>
+      </select>
       <p>Use the control buttons or the left, right, and up arrow keys to direct the robot to collect as many batteries as you can within the time limit. 
         The robot rotates 90 degrees from its perspective and moves in the direction it is facing (towards its blue shadow). <strong>Be careful to stay within the grid boundaries!!!</strong></p>
     </div>
@@ -65,7 +74,9 @@ export default {
       alertThreshold: 5, 
       robotLife: 3,
       highScore: false,
-      componentKey: 0
+      componentKey: 0,
+      boardLength: 5,
+      boardSelect: ''
     }
   },
   watch: {
@@ -78,6 +89,9 @@ export default {
       if (this.robotLife <= 0) {
         this.endGame()
       }
+    },
+    boardSelect: function (x) {
+      this.changeBoardLength(x)
     }
   },
   computed: {
@@ -120,6 +134,9 @@ export default {
     highScoreSubmitted () {
       this.componentKey += 1
       this.highScore = false
+    },
+    changeBoardLength (newBoardLength) {
+      this.boardLength = parseInt(newBoardLength)
     }
   }
 }

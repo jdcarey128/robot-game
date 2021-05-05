@@ -16,8 +16,8 @@ npm run serve
 To save high scores when running server locally, run the back end server at the same time on port 3000 (see [API](https://github.com/jdcarey128/robot-game-api) README instructions).
 
 ## Future Iterations 
-1. Customized grid size 
 1. Obstacles (difficulty selection)
+1. Regain health targets
 1. Robot selection 
 1. Time selection
 

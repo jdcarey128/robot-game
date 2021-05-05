@@ -4,7 +4,7 @@
       <slot />
       <p><strong>{{playerScore}}</strong></p>
       <input v-model="name" class="input-player-name" type="name" placeholder="Enter your name"><br>
-      <button :disabled="!validSubmission" @click="submitHighScore" class="button-submit-score">
+      <button :disabled="!validSubmission" @click="submitHighScore(name, playerScore, boardSize)" class="button-submit-score">
         Submit High Score
       </button>
     </div>
@@ -21,12 +21,16 @@ export default {
     playerScore: {
       type: Number, 
       required: true
+    },
+    boardSize: {
+      type: Number, 
+      required: false
     }
   },
   mounted () {
     window.addEventListener('keyup', event => {
       if (event.key === 'Enter' && this.validSubmission) {
-        this.submitHighScore(this.name, this.playerScore)
+        this.submitHighScore(this.name, this.playerScore, this.boardSize)
       }
     })
   },
@@ -41,11 +45,12 @@ export default {
     }
   },
   methods: {
-    submitHighScore (name, score) {
+    submitHighScore (name, score, boardSize) {
       const url = `${process.env.VUE_APP_API_URL}/users`
       const contact = {
         "name": name, 
-        "score": score
+        "score": score,
+        "size": `${boardSize} x ${boardSize}`
       }
       axios.post(url, contact)
         .then(() => {
