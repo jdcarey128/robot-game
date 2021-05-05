@@ -101,6 +101,10 @@ export default {
     timeLimit: {
       type: Number,
       required: true
+    },
+    obstacleFrequency: {
+      type: Number,
+      required: true
     }
   },
   emits: ["scorePoint", "loseRobotLife"],
@@ -156,6 +160,11 @@ export default {
       if (this.matchObstacleRobotCoordinates) {
         this.resetObstacle()
         this.$emit('loseRobotLife')
+      }
+    },
+    obstacleTimer: function () {
+      if (this.obstacleTimer > this.obstacleFrequency) {
+        this.resetObstacle()
       }
     }
   },

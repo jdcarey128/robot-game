@@ -21,6 +21,7 @@
         :boardLength="boardLength"
         :timePassed="timePassed"
         :timeLimit="timeLimit"
+        :obstacleFrequency="obstacleFrequency"
         @scorePoint="scorePoint"
         @loseRobotLife="loseRobotLife"
       />
@@ -42,7 +43,8 @@
         <option>9 x 9</option>
       </select>
       <p>Use the control buttons or the left, right, and up arrow keys to direct the robot to collect as many batteries as you can within the time limit. 
-        The robot rotates 90 degrees from its perspective and moves in the direction it is facing (towards its blue shadow). <strong>Be careful to stay within the grid boundaries!!!</strong></p>
+        The robot rotates 90 degrees from its perspective and moves in the direction it is facing (towards its blue shadow). <strong>Be careful to stay within the grid boundaries and 
+        to avoid the water droplets!!!</strong></p>
     </div>
     <div class="leader-board">
       <LeaderBoard
@@ -78,7 +80,8 @@ export default {
       highScore: false,
       componentKey: 0,
       boardLength: 5,
-      boardSelect: ''
+      boardSelect: '',
+      obstacleFrequency: 5
     }
   },
   watch: {
