@@ -1,6 +1,7 @@
 <template>
   <div :class="{
-    'square':(!robotIsPresent),'square-robot':(robotIsPresent),'square-target':(targetIsPresent)
+    'square':(!robotIsPresent),'square-robot':(robotIsPresent),'square-target':(targetIsPresent), 
+    'square-obstacle':(obstacleIsPresent)
     }" 
     @click='coordinates'
   >
@@ -10,19 +11,24 @@
     <div class="square-target" v-if='targetIsPresent && !robotIsPresent'>
       <img class="target-image" :src="targetImage" alt="target">
     </div>
+    <div class="square-obstacle" v-if='obstacleIsPresent && !robotIsPresent'>
+      <img class="obstacle-image" :src="obstacleImage" alt="obstacle">
+    </div>
   </div>
 </template>
 
 <script>
 import robotImage from '@/assets/floating-robot.png'
 import targetImage from '@/assets/target-battery.png'
+import obstacleImage from '@/assets/water.png'
 
 export default {
   name: 'Square',
   setup () {
     return {
       robotImage,
-      targetImage
+      targetImage,
+      obstacleImage
     }
   },
   props: {
@@ -31,6 +37,10 @@ export default {
       required: true
     },
     targetIsPresent: {
+      type: Boolean,
+      required: true
+    },
+    obstacleIsPresent: {
       type: Boolean,
       required: true
     },
@@ -68,6 +78,10 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.obstacle-image {
+  width: 60%;
 }
 
 .robot-image {
