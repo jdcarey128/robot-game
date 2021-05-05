@@ -36,6 +36,7 @@
         <option>3</option>
         <option>5</option>
         <option>7</option>
+        <option>9</option>
       </select>
       <p>Use the control buttons or the left, right, and up arrow keys to direct the robot to collect as many batteries as you can within the time limit. 
         The robot rotates 90 degrees from its perspective and moves in the direction it is facing (towards its blue shadow). <strong>Be careful to stay within the grid boundaries!!!</strong></p>

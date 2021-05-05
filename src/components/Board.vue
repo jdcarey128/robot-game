@@ -40,8 +40,9 @@ export default {
     Square
   },
   mounted () {
-    window.addEventListener('keyup', (event) => {
+    window.addEventListener('keydown', (event) => {
       if (this.gameActive) {
+        event.preventDefault()
         if (event.key === 'ArrowLeft') {
           this.rotateRobotLeft()
         } else if (event.key === 'ArrowRight') {
