@@ -72,7 +72,7 @@ export default {
       timerInterval: null, 
       warningThreshold: 20, 
       alertThreshold: 5, 
-      robotLife: 3,
+      robotLife: 4,
       highScore: false,
       componentKey: 0,
       boardLength: 5,

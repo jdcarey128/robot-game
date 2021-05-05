@@ -2,11 +2,18 @@
   <p><strong>Robot Direction: </strong>{{directions[robotDirection]}}</p>
   <div class="game-values">
     <p class="value"><strong>Player Score: </strong>{{playerScore}}</p>
-    <p class="value"><strong>Robot Life: </strong>{{robotLife}}</p>
+    <p class="value"><strong>Robot Battery Life: </strong></p>
+    <span class="robot-battery-life">
+      <img v-if="robotLife === 4" class="robot-battery-life" :src="fullHealth" :alt="robotLife">
+      <img v-if="robotLife === 3" class="robot-battery-life" :src="threeHealth" :alt="robotLife">
+      <img v-if="robotLife === 2" class="robot-battery-life" :src="twoHealth" :alt="robotLife">
+      <img v-if="robotLife === 1" class="robot-battery-life" :src="oneHealth" :alt="robotLife">
+      <img v-if="robotLife === 0" class="robot-battery-life" :src="deadBattery" :alt="robotLife">
+    </span>
   </div>
-  <p v-if="invalidCoordinates && robotAlive" class="error">Your robot crashed off the board and lost a life!!!</p>
+  <p v-if="invalidCoordinates && robotAlive" class="error">Your robot crashed off the board and lost battery life!!!</p>
   <button class="button-regenerate" v-if="invalidCoordinates && robotAlive" @click="resetRobot">Regenerate Robot</button>
-  <p v-if="!robotAlive" class="error">Your robot is destroyed!!!<br><strong>GAME OVER</strong></p>
+  <p v-if="!robotAlive" class="error">Your robot is drained!!!<br><strong>GAME OVER</strong></p>
   <div v-for="(row, rowIndex) in generatedBoard" class='board-row' :key='rowIndex'>
     <div v-for="(square, squareIndex) in row" class='board-square' :key='squareIndex'>
       <Square 
@@ -28,12 +35,22 @@
 <script>
 import Square from '@/components/Square.vue'
 import rotateArrow from '@/assets/rotate-arrow.png'
+import fullHealth from '@/assets/green-battery.png'
+import threeHealth from '@/assets/yellow-battery.png'
+import twoHealth from '@/assets/orange-battery.png'
+import oneHealth from '@/assets/red-battery.png'
+import deadBattery from '@/assets/dead-battery.png'
 
 export default {
   name: 'Board',
   setup () {
     return {
-      rotateArrow
+      rotateArrow,
+      fullHealth,
+      threeHealth,
+      twoHealth,
+      oneHealth,
+      deadBattery
     }
   },
   components: {
@@ -199,7 +216,11 @@ export default {
   display: flex;
   justify-content: center;
   .value {
-    margin: 10px 15px;
+    margin: 0px 15px;
+    margin-bottom: 10px;
+  }
+  .robot-battery-life {
+    width: 14px;
   }
 }
 .button-regenerate {
