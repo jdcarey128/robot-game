@@ -76,11 +76,20 @@ export default {
       return this.playerScore > this.minimumLeaderScore
     },
     minimumCount () {
-      return this.playerLeaders.length < this.leaderCountDisplay && this.playerScore > 0
+      const leaders = this.playerLeaders
+      if (leaders) {
+        return leaders.length < this.leaderCountDisplay && this.playerScore > 0
+      } else {
+        return this.playerScore > 0 
+      }
     },
     minimumLeaderScore () {
       const leaders = this.playerLeaders
-      return leaders[leaders.length - 1].score
+      if (leaders) {
+        return leaders[leaders.length - 1].score
+      } else {
+        return 0
+      }
     }
   },
   methods: {

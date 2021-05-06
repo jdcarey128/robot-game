@@ -59,6 +59,7 @@ export default {
         .catch(error => {
           const errorMessage = error.message 
           alert("There was an error when submitting your high score.", errorMessage)
+          this.$emit('highScoreSubmitted')
         })
     }
   }
