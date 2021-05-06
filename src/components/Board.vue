@@ -13,6 +13,7 @@
   </div>
   <p v-if="invalidCoordinates && robotAlive" class="error">Your robot crashed off the board and lost battery life!!!</p>
   <button class="button-regenerate" v-if="invalidCoordinates && robotAlive" @click="resetRobot">Regenerate Robot</button>
+  <p v-if="obstacleHealthLost && robotAlive" class="error">Your robot lost battery life!!!</p>
   <p v-if="!robotAlive" class="error">Your robot is drained!!!<br><strong>GAME OVER</strong></p>
   <div v-for="(row, rowIndex) in generatedBoard" class='board-row' :key='rowIndex'>
     <div v-for="(square, squareIndex) in row" class='board-square' :key='squareIndex'>
@@ -119,7 +120,8 @@ export default {
       obstacleTimer: 0,
       obstacleInterval: null,
       obstacleLocationX: null,
-      obstacleLocationY: null
+      obstacleLocationY: null,
+      obstacleHealthLost: false,
     }
   },
   watch: {
@@ -159,7 +161,11 @@ export default {
     matchObstacleRobotCoordinates: function () {
       if (this.matchObstacleRobotCoordinates) {
         this.resetObstacle()
+        this.toggleObstacleHealth()
         this.$emit('loseRobotLife')
+        setTimeout(() => {
+          this.toggleObstacleHealth()
+        }, 2000)
       }
     },
     obstacleTimer: function () {
@@ -288,6 +294,10 @@ export default {
     },
     startObstacleTimer () {
       this.obstacleInterval = setInterval(() => (this.obstacleTimer += 1), 1000)
+    },
+    toggleObstacleHealth () {
+      this.obstacleHealthLost = !this.obstacleHealthLost
+      console.log('obstacle health', this.obstacleHealthLost)
     }
   }
 }
